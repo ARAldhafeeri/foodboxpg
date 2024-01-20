@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <title>Category List</title>
+</head>
+<body>
+
+<div class="content">
+    <div th:replace="~{fragments/sidebar}"></div>
+    <h1>Users List</h1>
+    
+    <label for="dateFilter">Filter by Date:</label>
+    <input type="date" id="dateFilter" onchange="filterByDate()">
+
+    <table>
+        <thead>
+            <tr>
+                <th>purchaser id</th>
+                <th>date</th>
+                <th>total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Display categories dynamically here using server-side logic -->
+            <tr th:each="p : ${purchases}" class="purchaseRow">
+                <td th:text="${p.userId}"></td>
+                <td th:text="${p.date}"></td>
+                <td th:text="${p.total}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script th:inline="javascript">
+        function filterByDate() {
+            var inputDate = document.getElementById("dateFilter").value;
+            var rows = document.getElementsByClassName("purchaseRow");
+
+            for (var i = 0; i < rows.length; i++) {
+                var purchaseDate = rows[i].getElementsByTagName("td")[1].innerText;
+                
+                // Compare the date and hide/show rows accordingly
+                if (purchaseDate === inputDate) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</div>
+</body>
+</html>
