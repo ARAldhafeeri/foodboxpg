@@ -4,7 +4,7 @@ const product = {
     name: '',
     price: '',
     dateAdded: '',
-    categoryId: ''
+    cusineId: ''
 }
 // Function to open the edit modal
 function openEditModal(id) {

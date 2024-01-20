@@ -1,7 +1,7 @@
 package com.org.ecommerce.controller;
 
 import com.org.ecommerce.modal.Admin;
-import com.org.ecommerce.modal.Category;
+import com.org.ecommerce.modal.Cusine;
 import com.org.ecommerce.modal.Product;
 import com.org.ecommerce.requests.ChangePasswordRequest;
 import com.org.ecommerce.requests.CreateAdminRequest;
@@ -9,7 +9,7 @@ import com.org.ecommerce.requests.LoginRequest;
 import com.org.ecommerce.response.ErrorRes;
 import com.org.ecommerce.response.LoginRes;
 import com.org.ecommerce.service.AdminService;
-import com.org.ecommerce.service.CategoryService;
+import com.org.ecommerce.service.CusineService;
 import com.org.ecommerce.service.ProductService;
 import com.org.ecommerce.service.ProductServiceImpl;
 import com.org.ecommerce.service.PurchaseService;
@@ -43,7 +43,7 @@ public class AdminController {
     private ProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private CusineService cusineService;
 
     @Autowired
     private UserServices userServices;
@@ -208,8 +208,8 @@ public class AdminController {
 
         @GetMapping("/products")
         public String productView(HttpSession session, Model model) {
-            System.out.println(categoryService.getCategoriesDropDown());
-            model.addAttribute("catogry", categoryService.getCategoriesDropDown());
+            System.out.println(cusineService.getCusinesDropDown());
+            model.addAttribute("cusines", cusineService.getCusinesDropDown());
             model.addAttribute("products", productService.getAllProducts());
             return "products";
         }
@@ -249,44 +249,44 @@ public class AdminController {
         }
 
 
-        // categories
+        // cusines
         
-        @GetMapping("/categories")
-        public String categoryView(HttpSession session, Model model) {
-            model.addAttribute("categories", categoryService.getAllCategories());
-            return "categories";
+        @GetMapping("/cusines")
+        public String cusineView(HttpSession session, Model model) {
+            model.addAttribute("cusines", cusineService.getAllCusines());
+            return "cusines";
         }
 
-        @PostMapping("/categories/create")
-        public RedirectView createCategory(@ModelAttribute("Category") Category body,  RedirectAttributes redirectAttributes){
+        @PostMapping("/cusines/create")
+        public RedirectView createcusine(@ModelAttribute("cusine") Cusine body,  RedirectAttributes redirectAttributes){
 
-            com.org.ecommerce.modal.Category created = categoryService.createCategory(body);
+            com.org.ecommerce.modal.Cusine created = cusineService.createCusine(body);
             if (created == null) {
-                redirectAttributes.addFlashAttribute("message", "category not created");
-                return new RedirectView("/admin/categories");
+                redirectAttributes.addFlashAttribute("message", "cusine not created");
+                return new RedirectView("/admin/cusines");
             }
-            redirectAttributes.addFlashAttribute("message", "category created");
-            return new RedirectView("/admin/categories");
+            redirectAttributes.addFlashAttribute("message", "cusine created");
+            return new RedirectView("/admin/cusines");
         }
 
-        @PostMapping("/categories/update")
-        public RedirectView updateCategory(
-            @ModelAttribute("Category") Category body,
+        @PostMapping("/cusines/update")
+        public RedirectView updatecusine(
+            @ModelAttribute("cusine") Cusine body,
             RedirectAttributes redirectAttributes, 
             @RequestParam Long id){
 
             body.setID(id);
 
-            categoryService.updateCategory(body);
-            redirectAttributes.addFlashAttribute("message", "category updated");
-            return new RedirectView("/admin/categories");
+            cusineService.updateCusine(body);
+            redirectAttributes.addFlashAttribute("message", "cusine updated");
+            return new RedirectView("/admin/cusines");
         }
 
-        @PostMapping("/categories/delete")
-        public RedirectView deleteCategory(@RequestParam Long id, RedirectAttributes redirectAttributes){
-            categoryService.deleteCategory(id);
-            redirectAttributes.addFlashAttribute("message", "category deleted");
-            return new RedirectView("/admin/categories");
+        @PostMapping("/cusines/delete")
+        public RedirectView deletecusine(@RequestParam Long id, RedirectAttributes redirectAttributes){
+            cusineService.deleteCusine(id);
+            redirectAttributes.addFlashAttribute("message", "cusine deleted");
+            return new RedirectView("/admin/cusines");
         }
 
         // users 

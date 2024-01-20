@@ -1,0 +1,10 @@
+<!-- editModalFragment.html -->
+<div class="modal-content" th:fragment="createCusineForm">
+    <button onclick="closeCreateModal()" class="closeModal">X</button>
+    <form id="createCusineForm" method="POST" action="/admin/cusines/create">
+       <label for="cusineName">Name</label>
+       <input type="text" id="cusineName" name="name" />
+      <button type="submit">send</button>    
+    </form>    
+ </div>
+ 

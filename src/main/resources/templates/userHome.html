@@ -16,7 +16,7 @@
                     <h3 th:text="${product.name}"></h3>
                     <!-- Product Price -->
                     <p th:text="'Price: ' + ${product.price}"></p>
-                    <p th:text="'Category ID: ' + ${product.categoryId}"></p>
+                    <p th:text="'cusine ID: ' + ${product.cusineId}"></p>
                     <form method="post" th:action="@{/user/addToCart}">
                         <input type="hidden" th:name="productId" th:value="${product.getID()}" />
                         <input type="hidden" th:name="qty" th:value="1" />

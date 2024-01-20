@@ -29,7 +29,8 @@ public class ProductServiceImpl implements ProductService {
 				product.getName(),
 				product.getPrice(),
 				product.getDateAdded(),
-				product.getCategoryId()
+				product.getCusineId(),
+				product.getViewable()
 			);
 
 		}

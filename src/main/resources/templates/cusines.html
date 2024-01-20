@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link th:href="@{/css/main.css}" rel="stylesheet" />
-    <title>Category List</title>
+    <title>cusine List</title>
 </head>
 <body>
 
 <div class="content">
     <div th:replace="~{fragments/sidebar}"></div>
-    <h1>Category List</h1>
+    <h1>cusine List</h1>
     
     <table>
         <thead>
@@ -20,8 +20,8 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Display categorys dynamically here using server-side logic -->
-            <tr th:each="p : ${categories}">
+            <!-- Display cusines dynamically here using server-side logic -->
+            <tr th:each="p : ${cusines}">
                 <td th:text="${p.name}"></td>
                 <td>
                     <button class="edit-btn" th:data-name="${p.getID()}" th:onclick="openEditModal(this.getAttribute('data-name'))">Edit</button>
@@ -30,22 +30,22 @@
                 <!-- Modals for actions -->
                 <div th:attr="dataId=${p.getID()}" class="modal">
                     <div th:replace="
-                    ~{fragments/categories/editCategoryModal 
-                    :: editCategoryForm(
-                        categoryId=${p.getID()},
-                        categoryName=${p.name})}">
+                    ~{fragments/cusines/editCusineModal 
+                    :: editCusineForm(
+                        cusineId=${p.getID()},
+                        cusineName=${p.name})}">
                     </div>
                 </div>
                 <div th:attr="dataid-delete=${p.getID()}" class="modal">
                     <div th:replace="
-                    ~{fragments/categories/deleteCategoryModal
-                    :: deleteCategoryModal(
-                        categoryId=${p.getID()},
-                        categoryName=${p.name} )}">
+                    ~{fragments/cusines/deleteCusineModal
+                    :: deleteCusineModal(
+                        cusineId=${p.getID()},
+                        cusineName=${p.name} )}">
                     </div>
                 </div>
             </tr>
-            <!-- Repeat for each category -->
+            <!-- Repeat for each cusine -->
         </tbody>
     </table>
 
@@ -53,7 +53,7 @@
 </div>
 
 <div id="createModal" class="modal">
-    <div th:replace="~{fragments/categories/createCategoryModal}">
+    <div th:replace="~{fragments/cusines/createCusineModal}">
     </div>
 </div>
 <script th:src="@{/js/modal.js}"></script>

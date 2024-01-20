@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link th:href="@{/css/main.css}" rel="stylesheet" />
-    <title>Category List</title>
+    <title>Cusine List</title>
 </head>
 <body>
 
@@ -43,7 +43,6 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Display categorys dynamically here using server-side logic -->
             <tr th:each="u : ${users}">
                 <td th:text="${u.getFname()}"></td>
                 <td th:text="${u.getLname()}"></td>

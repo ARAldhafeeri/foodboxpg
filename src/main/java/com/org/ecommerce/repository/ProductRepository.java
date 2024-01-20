@@ -29,13 +29,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query(
-        value ="UPDATE Product p SET p.name = :name, p.price = :price, p.dateAdded = :dateAdded, p.categoryId = :categoryId WHERE p.id = :id")
+        value ="UPDATE Product p SET p.name = :name, p.price = :price, p.dateAdded = :dateAdded, p.cusineId = :cusineId, p.viewable = :viewable WHERE p.id = :id")
     void updateProduct(
         @Param("id") long id, 
         @Param("name") String name, 
         @Param("price") BigDecimal price, 
         @Param("dateAdded") String dateAdded, 
-        @Param("categoryId") long categoryId
+        @Param("cusineId") long cusineId,
+        @Param("viewable") int viewable
         );
 
 }

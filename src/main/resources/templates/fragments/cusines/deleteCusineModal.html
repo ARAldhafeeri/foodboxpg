@@ -1,0 +1,9 @@
+<div class="modal-content" th:fragment="deleteCusineModal (cusineId, cusineName)">
+        <h2>Delete Causine</h2>
+        <p>Are you sure you want to delete <b th:text="${cusineName}"></b></p>
+        <form id="deleteCausineForm" method="POST" action="/admin/cusines/delete">
+            <input type="hidden" id="cusineId" name="id" th:value="${cusineId}"/>
+            <button type="submit">Yes</button>
+        </form>
+        <button onclick="closeDeleteModal()">No</button>
+</div>

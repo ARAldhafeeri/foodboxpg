@@ -2,8 +2,8 @@ package com.org.ecommerce.modal;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name= "category")   
-public class Category { 
+@Table(name= "cusine")   
+public class Cusine { 
 
 
 	@Id 

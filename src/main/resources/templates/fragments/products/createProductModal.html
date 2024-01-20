@@ -1,5 +1,5 @@
 <!-- editModalFragment.html -->
-<div class="modal-content" th:fragment="createProductForm (category)">
+<div class="modal-content" th:fragment="createProductForm (cusines)">
     <button onclick="closeCreateModal()" class="closeModal">X</button>
     <form id="createProductForm" method="POST" action="/admin/products/create">
        <label for="productName">Name</label>
@@ -8,8 +8,12 @@
        <input type="text" id="productPrice" name="price" />
        <label for="productDateAdded" name>Date Added</label>
        <input type="text" id="productDateAdded" name="dateAdded"/>
-       <label for="productCategoryId">Category</label>
-      <select id="category" name="categoryId" th:utext="${category}"></select>
+       <label for="productCasineId">Casine</label>
+      <select id="cusines" name="cusines" th:utext="${cusines}"></select>
+      <select id="productViewable" name="viewable">
+        <option value=1>Show</option>
+        <option value=0>Hide</option>
+      </select>
       <button type="submit">send</button>    
     </form>    
  </div>

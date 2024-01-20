@@ -1,0 +1,11 @@
+<!-- editModalFragment.html -->
+<div class="modal-content" th:fragment="editCusineForm (cusineId, cusineName)">
+   <button th:data-name="${p.getID()}" th:onclick="closeEditModal(this.getAttribute('data-name'))" class="closeModal">X</button>
+   <form id="editCusineForm" method="POST" action="/admin/cusines/update">
+      <label for="cusineId">ID</label>
+      <input type="hidden" id="cusineId" name="id" th:value="${cusineId}"/>
+      <label for="cusineName">Name</label>
+      <input type="text" id="cusineName" name="name" th:value="${cusineName}"/>
+      <button type="submit">send</button>    
+   </form>    
+</div>

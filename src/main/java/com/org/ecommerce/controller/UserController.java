@@ -20,7 +20,7 @@ import com.org.ecommerce.modal.PurchaseItem;
 import com.org.ecommerce.modal.User;
 import com.org.ecommerce.requests.ChangePasswordRequest;
 import com.org.ecommerce.requests.CreateAdminRequest;
-import com.org.ecommerce.service.CategoryService;
+import com.org.ecommerce.service.CusineService;
 import com.org.ecommerce.service.ProductService;
 import com.org.ecommerce.service.PurchaseItemService;
 import com.org.ecommerce.service.PurchaseService;
@@ -41,7 +41,7 @@ public class UserController {
     private ProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private CusineService cusineService;
 
     @Autowired
     private PurchaseItemService purchaseItemService;
@@ -104,7 +104,7 @@ public class UserController {
             Model model
         ) {
             model.addAttribute("products", productService.getAllProducts());
-            model.addAttribute("categories", categoryService.getAllCategories());
+            model.addAttribute("cusines", cusineService.getAllCusines());
             return "userHome";
         }
 
