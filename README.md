@@ -96,7 +96,7 @@ Each sprint delivers a part of the application, ensuring steady progress towards
 
 
 # backlog 
-[ ] **Sprint 1 (Day 1):** Setup project structure, database design, and implement admin portal registration and login, curd  cusine, food.
-[ ] **Sprint 2 (Day 2):** Develop user portal functionalities , login, register, home  page, food, cusine filtering, sorting viewing.
-[ ] - **Sprint 3 (Day 3):** Integrate payment gateaway ( stripe ), checkout process.
-[ ] - **Sprint 4 (Day 4):** Add unit tests, configure ci/cd, deploy on aws E2C  instance.
+[x] **Sprint 1 (Day 1):** Setup project structure, database design, and implement admin portal registration and login, curd  cusine, food.
+[] **Sprint 2 (Day 2):** Develop user portal functionalities , login, register, home  page, food, cusine filtering, sorting viewing.
+[] - **Sprint 3 (Day 3):** Integrate payment gateaway ( stripe ), checkout process.
+[] - **Sprint 4 (Day 4):** Add unit tests, configure ci/cd, deploy on aws E2C  instance.
