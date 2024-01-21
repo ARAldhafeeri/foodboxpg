@@ -24,8 +24,15 @@
         </div>
         <form method="post" th:action="@{/user/checkout}">
             <input type="hidden" th:name="userId" th:value="1" />
-            <input type="hidden" th:name="total" th:value="${total}" />
-            <button type="submit">Checkout</button>
+            <!-- NOTE: data-key/data-amount/data-currency will be rendered by Thymeleaf -->
+            <script
+                src='https://checkout.stripe.com/checkout.js' 
+                class='stripe-button'
+                th:attr='data-key=${stripePublicKey}, 
+                    data-amount=${ total * 100}, 
+                    data-currency=${currency}'
+                data-zip-code='false'>
+            </script>
         </form>
     </div>
 </body>

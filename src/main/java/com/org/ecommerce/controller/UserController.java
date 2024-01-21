@@ -19,12 +19,18 @@ import com.org.ecommerce.modal.Purchase;
 import com.org.ecommerce.modal.PurchaseItem;
 import com.org.ecommerce.modal.User;
 import com.org.ecommerce.requests.ChangePasswordRequest;
+import com.org.ecommerce.requests.ChargeRequest;
 import com.org.ecommerce.requests.CreateAdminRequest;
+import com.org.ecommerce.requests.ChargeRequest.Currency;
 import com.org.ecommerce.service.CusineService;
+import com.org.ecommerce.service.PaymentService;
 import com.org.ecommerce.service.ProductService;
 import com.org.ecommerce.service.PurchaseItemService;
 import com.org.ecommerce.service.PurchaseService;
 import com.org.ecommerce.service.UserServices;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
+
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +54,9 @@ public class UserController {
 
     @Autowired 
     private PurchaseService purchaseService;
+
+    @Autowired
+    private PaymentService paymentsService;
 
         // authentication
 
@@ -131,7 +140,11 @@ public class UserController {
             for(PurchaseItem purchaseItem: purchaseItems) {
                 total = total.add(purchaseItem.getPrice());
             }
+
             model.addAttribute("total", total);
+            model.addAttribute("amount", 50 * 100); // in cents
+            model.addAttribute("stripePublicKey", paymentsService.getPublicKey());
+            model.addAttribute("currency", ChargeRequest.Currency.EUR);
 
             return "userCheckout";
         }
@@ -140,7 +153,8 @@ public class UserController {
         public RedirectView checkout(
             Model model, 
             @ModelAttribute("PurcahseItem") PurchaseItem purchaseItem,
-            RedirectAttributes redirectAttributes) {
+            @ModelAttribute("ChargeRequest") ChargeRequest chargeRequest,
+            RedirectAttributes redirectAttributes) throws StripeException {
             
             List<PurchaseItem> purchaseItems = purchaseItemService.getAllItemsByPurchaserId(purchaseItem.getUserId());
             
@@ -161,8 +175,27 @@ public class UserController {
                 item.setPurchaseId(created.getID());
                 purchaseItemService.updateItem(item);
             }
+
+            chargeRequest.setDescription("Example charge");
+            chargeRequest.setCurrency(Currency.EUR);
+            chargeRequest.setAmount(total.intValue());
+
+            Charge charge = paymentsService.charge(chargeRequest);
+            model.addAttribute("id", charge.getId());
+            model.addAttribute("status", charge.getStatus());
+            model.addAttribute("chargeId", charge.getId());
+            model.addAttribute("balance_transaction", charge.getBalanceTransaction());
             
-            return new RedirectView("/user/home");
+            return new RedirectView("/user/checkoutResult");
+        }
+
+        // checkout result
+        @GetMapping("/checkoutResult")
+        public String checkoutResult(
+            Model model
+        ) {
+
+            return "checkoutRes";
         }
 
 
