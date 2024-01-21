@@ -1,7 +1,5 @@
 package com.org.ecommerce;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.org.ecommerce.modal.Admin;
-import com.org.ecommerce.requests.CreateAdminRequest;
 import com.org.ecommerce.requests.LoginRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
