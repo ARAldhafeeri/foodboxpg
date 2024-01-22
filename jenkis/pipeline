@@ -1,0 +1,75 @@
+pipeline {
+    agent any 
+    
+    tools {
+        maven "maven-3.8.6"
+        dockerTool "Docker"
+    }
+    
+   environment {
+        max = 334
+        randomTag = "${Math.abs(new Random().nextInt(max+1))}"
+    }
+
+    stages {
+        stage("verify"){
+            steps{
+                sh "docker-compose -v"
+
+            }
+        }
+        stage("build") {
+            steps {
+                
+                sh 'rm -rf -d foodboxpg'
+                sh 'git clone -b main https://github.com/ARAldhafeeri/foodboxpg.git'
+                dir("foodboxpg"){
+                    sh "mvn install -DskipTests"
+
+                }
+            }
+        }
+
+        stage("Dockerize") {
+            steps {
+                script {
+                     dir("foodboxpg"){
+                       def dockerImage = "foodbox"
+                       def dockerRegistry = "araldhafeeri"
+
+                        sh "docker-compose build"
+                        
+                        sh "docker tag foodboxpg-app  $dockerRegistry/$dockerImage:$env.randomTag"
+
+
+                     }
+                    
+                 }
+            }
+        }
+        
+     stage("Publish to Docker Registry") {
+            steps {
+                script {
+                    def dockerImage = "foodbox"
+                    def dockerRegistry = "araldhafeeri"
+                    dir("foodboxpg"){
+                        withCredentials([usernamePassword(credentialsId: 'docker-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+
+                        sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+
+                        sh "docker push $dockerRegistry/$dockerImage:$env.randomTag"
+                        }
+                    }
+                 }
+            }
+        }
+
+    }
+
+    post {
+        always {
+            cleanAfterCheckout()
+        }
+    }
+}
