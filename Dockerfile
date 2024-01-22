@@ -1,10 +1,7 @@
-FROM maven:3.8-openjdk-11-slim
+FROM openjdk:19-ea-20-jdk-oracle
 
-WORKDIR /app
+COPY target/*.jar /app.jar
 
-COPY ./pom.xml ./pom.xml
-COPY ./src ./src
+EXPOSE 3306
 
-RUN mvn install -DskipTests
-
-RUN mvn spring-boot:run
+ENTRYPOINT ["java","-jar","/app.jar"]
