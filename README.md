@@ -100,3 +100,4 @@ Each sprint delivers a part of the application, ensuring steady progress towards
 [x] **Sprint 2 (Day 2):** Develop user portal functionalities , login, register, home  page, food, cusine filtering, sorting viewing.
 [x] - **Sprint 3 (Day 3):** Integrate payment gateaway final step of checkout ( stripe ), checkout process.
 [] - **Sprint 4 (Day 4):** Add unit tests, docker, configure jenkis ci/cd, deploy on aws E2C  instance.
+
