@@ -9,12 +9,16 @@ pipeline {
    environment {
         max = 334
         randomTag = "${Math.abs(new Random().nextInt(max+1))}"
+        awsRegion = "us-east-1"
+        ecrRegistry = "public.ecr.aws/e7a8a6g2"
+
     }
 
     stages {
         stage("verify"){
             steps{
                 sh "docker-compose -v"
+                sh "which aws"
 
             }
         }
@@ -34,12 +38,11 @@ pipeline {
             steps {
                 script {
                      dir("foodboxpg"){
-                       def dockerImage = "foodbox"
+                       def dockerImage = "foodboxpg-app"
                        def dockerRegistry = "araldhafeeri"
 
                         sh "docker-compose build"
-                        
-                        sh "docker tag foodboxpg-app  $dockerRegistry/$dockerImage:$env.randomTag"
+                        sh " docker tag foodboxpg-app:latest 138027256800.dkr.ecr.us-east-1.amazonaws.com/foodbox:latest"
 
 
                      }
@@ -47,25 +50,41 @@ pipeline {
                  }
             }
         }
+        // stage("run integration tests"){
+        //     steps{
+        //         dir("foodboxpg"){
+        //             sh "mvn test"
+        //         }
+        //     }
+        // }
         
-     stage("Publish to Docker Registry") {
+         stage('Logging into AWS ECR') {
+            steps {
+                script {
+                     withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
+                        sh '''docker login -u AWS 138027256800.dkr.ecr.us-east-1.amazonaws.com -p $(aws ecr get-login-password --region us-east-1)'''
+                    
+                     }
+                }
+                 
+            }
+        }
+        
+        stage("Publish to aws ecr") {
             steps {
                 script {
                     def dockerImage = "foodbox"
                     def dockerRegistry = "araldhafeeri"
-                    dir("foodboxpg"){
-                        withCredentials([usernamePassword(credentialsId: 'docker-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-
-                        sh "docker login -u ${USERNAME} -p ${PASSWORD}"
-
-                        sh "docker push $dockerRegistry/$dockerImage:$env.randomTag"
-                        }
+                     withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
+    
+                        // sh  "docker login --username AWS -p $(aws ecr get-login-password --region us-east-1) public.ecr.aws/e7a8a6g2"
+                        sh  "docker push 138027256800.dkr.ecr.us-east-1.amazonaws.com/foodbox:latest"
+                     }
                     }
                  }
             }
         }
 
-    }
 
     post {
         always {
