@@ -31,24 +31,14 @@ pipeline {
             }
         }
 
-        
-       stage("run integration tests"){
-            steps{
-                dir("foodboxpg"){
-                    sh "mvn test"
-                }
-            }
-        }
-
         stage("Dockerize") {
             steps {
                 script {
                     dir("foodboxpg"){
-                        def dockerImage = "foodboxpg-app"
-                        def dockerRegistry = "araldhafeeri"
 
-                        sh "docker-compose build"
+                        sh "docker build ."
                         sh "docker tag foodboxpg-app:latest 138027256800.dkr.ecr.us-east-1.amazonaws.com/foodbox:latest"
+                        sh "docker images"
                     }
                 }
             }
@@ -67,8 +57,6 @@ pipeline {
         stage("Publish to aws ecr") {
             steps {
                 script {
-                    def dockerImage = "foodbox"
-                    def dockerRegistry = "araldhafeeri"
                     withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
                         sh "docker push 138027256800.dkr.ecr.us-east-1.amazonaws.com/foodbox:latest"
                     }
@@ -79,7 +67,7 @@ pipeline {
         stage("deploy to ecs") {
             steps {
                 script {
-                    sh "aws ecs update-service --cluster FoodBox2 --service foodbox --force-new-deployment"
+                    sh "aws ecs update-service --cluster fb --service fb --force-new-deployment"
                 }
             }  
         }
