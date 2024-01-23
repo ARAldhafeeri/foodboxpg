@@ -11,12 +11,12 @@ services:
     volumes:
       - app:/app
     depends_on:
-      - db
+      - mysqldb
     networks:
       - spring-app-network
 
-  db:
-    image: mysql:8.0.28
+  mysqldb:
+    image: mysql:latest
     ports:
       - "3307:3306"
     environment:
@@ -25,12 +25,12 @@ services:
     networks:
       - spring-app-network
     volumes:
-      - db:/var/lib/mysql
+      - database:/var/lib/mysql
 
 networks:
   spring-app-network:
     driver: bridge
 
 volumes:
-  db:
+  database:
   app:
